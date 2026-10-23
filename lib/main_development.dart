@@ -1,5 +1,6 @@
 import 'package:classipod/core/constants/app_palette.dart';
 import 'package:classipod/core/extensions/build_context_extensions.dart';
+import 'package:classipod/core/localization/localization_delegates.dart';
 import 'package:classipod/core/navigation/routes.dart';
 import 'package:classipod/features/app_startup/screens/app_startup_screen.dart';
 import 'package:classipod/features/settings/controller/settings_preferences_controller.dart';
@@ -59,7 +60,7 @@ class DevelopmentClassipodApp extends ConsumerWidget {
       locale: Locale(languageLocaleCode),
       builder: DevicePreview.appBuilder,
       onGenerateTitle: (context) => context.localization.appTitle,
-      localizationsDelegates: AppLocalizations.localizationsDelegates,
+      localizationsDelegates: appLocalizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
       showPerformanceOverlay: debuggerTools.showPerformanceOverlay,
       showSemanticsDebugger: debuggerTools.showSemanticsDebugger,

@@ -1,3 +1,4 @@
+import 'package:classipod/core/localization/localization_delegates.dart';
 import 'package:classipod/l10n/generated/app_localizations.dart';
 import 'package:cupertino_ui/cupertino_ui.dart';
 
@@ -13,7 +14,7 @@ class AppStartupError extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CupertinoApp(
-      localizationsDelegates: AppLocalizations.localizationsDelegates,
+      localizationsDelegates: appLocalizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
       debugShowCheckedModeBanner: false,
       home: CupertinoPageScaffold(

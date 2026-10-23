@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 import 'dart:ui' as ui;
 
+import 'package:classipod/core/localization/localization_delegates.dart';
 import 'package:classipod/core/subsonic/subsonic_client.dart';
 import 'package:classipod/core/subsonic/subsonic_controller.dart';
 import 'package:classipod/features/settings/widgets/subsonic_dialog.dart';
@@ -57,7 +58,10 @@ class DialogController extends SubsonicController {
 
 void main() {
   late DialogController controller;
-  Future<void> open(WidgetTester tester) async {
+  Future<void> open(
+    WidgetTester tester, {
+    Locale locale = const Locale('en'),
+  }) async {
     controller = DialogController();
     await tester.binding.setSurfaceSize(const Size(320, 480));
     addTearDown(() => tester.binding.setSurfaceSize(null));
@@ -81,8 +85,9 @@ void main() {
           ],
           child: CupertinoApp(
             debugShowCheckedModeBanner: false,
-            localizationsDelegates: AppLocalizations.localizationsDelegates,
-            supportedLocales: const [Locale('en')],
+            locale: locale,
+            localizationsDelegates: appLocalizationsDelegates,
+            supportedLocales: AppLocalizations.supportedLocales,
             home: Builder(
               builder: (context) => CupertinoPageScaffold(
                 child: Center(
@@ -100,6 +105,25 @@ void main() {
     await tester.tap(find.text('Open'));
     await tester.pumpAndSettle();
   }
+
+  testWidgets('dialog opens for non-English and unsupported locales', (
+    tester,
+  ) async {
+    for (final locale in const [
+      Locale('zh'),
+      Locale('de'),
+      Locale('ja'),
+      Locale('ace'),
+    ]) {
+      await open(tester, locale: locale);
+      expect(tester.takeException(), isNull, reason: '$locale');
+      expect(
+        find.byKey(const Key('subsonic-url')),
+        findsOneWidget,
+        reason: '$locale',
+      );
+    }
+  });
 
   testWidgets('small-screen setup masks password and connects', (tester) async {
     await open(tester);
